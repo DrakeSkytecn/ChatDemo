@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_tongbao_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_image">
+
+    <com.maxi.chatdemo.widget.pulltorefresh.PullToRefreshLayout
+        android:id="@+id/content_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_container_ll"
+        android:listSelector="@android:color/transparent"
+        android:orientation="vertical"
+        android:background="@color/transparent"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_container_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/tongbao_utils"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/frame_bg"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_weight="4">
+
+                <EditText
+                    android:id="@+id/mess_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@drawable/xmxq_tc_bj"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:imeOptions="actionSend"
+                    android:inputType="text"
+                    android:padding="5dp"
+                    android:textSize="16sp" />
+
+                <View
+                    android:id="@+id/mess_et_click"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/send"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+                android:text="send"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <com.maxi.chatdemo.widget.ChatBottomView
+                android:id="@+id/other_lv"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="gone" />
+
+        </FrameLayout>
+    </LinearLayout>
+</RelativeLayout>
