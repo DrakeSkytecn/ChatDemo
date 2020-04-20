@@ -263,7 +263,7 @@ public abstract class BaseActivity extends Activity {
             @Override
             public void onClick(View view) {
                 photoIv.setVisibility(View.VISIBLE);
-                handler.sendEmptyMessageDelayed(0,5000);
+                handler.sendEmptyMessageDelayed(0,4000);
             }
         });
 
