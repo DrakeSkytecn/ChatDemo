@@ -39,9 +39,9 @@ public abstract class BaseActivity extends Activity {
     //玩家的選項放在這裏
     public String[][] player_choice_short = {
             {""},
-            {"just come out from the toilet"},
-            {"I thought you will be waiting"},
-            {"ok"},
+            {"剛從廁所出來"},
+            {"我以為你會等"},
+            {"好的"},
             {"left", "right"},
             {"left", "right"},
             {"left", "right"}
