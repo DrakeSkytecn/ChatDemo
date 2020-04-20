@@ -5,12 +5,15 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,6 +98,8 @@ public abstract class BaseActivity extends Activity {
     public int position;
     public int bottomStatusHeight = 0;
     private Button send;
+    private Button photo;
+    private ImageView photoIv;
     private ChatBottomView tbbv;
     private Button choice1;
     private Button choice2;
@@ -119,6 +124,8 @@ public abstract class BaseActivity extends Activity {
     public static final int REFRESH = 0x0011;
     public static final int RECERIVE_OK = 0x1111;
     public static final int PULL_TO_REFRESH_DOWN = 0x0111;
+
+
 
     protected BaseActivity() {
 
@@ -153,6 +160,8 @@ public abstract class BaseActivity extends Activity {
         mEditTextContent = (EditText) findViewById(R.id.mess_et);
         mess_et_click = findViewById(R.id.mess_et_click);
         send = findViewById(R.id.send);
+        photo = findViewById(R.id.photo);
+        photoIv = findViewById(R.id.photoIv);
         if (android.os.Build.VERSION.SDK_INT <= 10) {
             mEditTextContent.setInputType(InputType.TYPE_NULL);
         } else {
@@ -243,6 +252,21 @@ public abstract class BaseActivity extends Activity {
                 }
             }
         });
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                photoIv.setVisibility(View.GONE);
+            }
+        };
+        photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                photoIv.setVisibility(View.VISIBLE);
+                handler.sendEmptyMessageDelayed(0,5000);
+            }
+        });
+
         reslist = getExpressionRes(40);
 
         List<View> views = new ArrayList<View>();
