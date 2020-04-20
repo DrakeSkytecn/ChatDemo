@@ -84,6 +84,10 @@ public abstract class BaseActivity extends Activity {
     public void setPlot_index(int plot_index) {
         if (plot_index < player_choice_short.length -1) {
             this.plot_index = plot_index;
+            if (plot_index == 4) {
+                photo.setClickable(true);
+                photo.setBackgroundColor(getResources().getColor(R.color.red2));
+            }
         }
     }
 
@@ -99,14 +103,33 @@ public abstract class BaseActivity extends Activity {
     public int bottomStatusHeight = 0;
     private Button send;
     private Button photo;
+
+    public Button getPhoto() {
+        return photo;
+    }
+
     private ImageView photoIv;
     private ChatBottomView tbbv;
+
+    public ChatBottomView getTbbv() {
+        return tbbv;
+    }
+
     private Button choice1;
     private Button choice2;
     public View mess_et_click;
+
+    public View getMess_et_click() {
+        return mess_et_click;
+    }
+
     public EditText mEditTextContent;
+
+    public EditText getmEditTextContent() {
+        return mEditTextContent;
+    }
+
     private File mCurrentPhotoFile;
-//    public View activityRootView;
     private Toast mToast;
     public String userName = "test";
     private String camPicPath;
@@ -126,15 +149,11 @@ public abstract class BaseActivity extends Activity {
     public static final int PULL_TO_REFRESH_DOWN = 0x0111;
 
 
-
     protected BaseActivity() {
 
     }
 
-
     protected abstract void sendMessage();
-
-
 
     protected abstract void loadRecords();
 
@@ -145,7 +164,6 @@ public abstract class BaseActivity extends Activity {
         findView();
         initpop();
         init();
-//        getPersimmions();
     }
 
     @Override
@@ -156,11 +174,11 @@ public abstract class BaseActivity extends Activity {
 
     protected void findView() {
         pullList = (PullToRefreshLayout) findViewById(R.id.content_lv);
-//        activityRootView = findViewById(R.id.layout_tongbao_rl);
         mEditTextContent = (EditText) findViewById(R.id.mess_et);
         mess_et_click = findViewById(R.id.mess_et_click);
         send = findViewById(R.id.send);
         photo = findViewById(R.id.photo);
+
         photoIv = findViewById(R.id.photoIv);
         if (android.os.Build.VERSION.SDK_INT <= 10) {
             mEditTextContent.setInputType(InputType.TYPE_NULL);
@@ -220,6 +238,7 @@ public abstract class BaseActivity extends Activity {
             }
         });
         pullList.setpulltorefreshNotifier(pullNotifier);
+
         tbbv.setOnHeadIconClickListener(new HeadIconSelectorView.OnHeadIconClickListener() {
 
             @SuppressLint("InlinedApi")
@@ -237,13 +256,16 @@ public abstract class BaseActivity extends Activity {
 
                 }
             }
-
         });
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!mEditTextContent.getText().toString().isEmpty()) {
+//                    mEditTextContent.setClickable(false);
+//                    tbbv.setClickable(false);
                     mess_et_click.callOnClick();
+                    mess_et_click.setClickable(false);
+                    photo.setClickable(false);
                     sendMessage();
 //                    if(plot_index<player_choice_short.length-1) {
 //                        plot_index++;
@@ -264,12 +286,14 @@ public abstract class BaseActivity extends Activity {
             public void onClick(View view) {
                 photoIv.setVisibility(View.VISIBLE);
                 handler.sendEmptyMessageDelayed(0,4000);
+                photo.setClickable(false);
+                photo.setBackgroundColor(getResources().getColor(R.color.light_gray_11));
             }
         });
-
+        photo.setClickable(false);
         reslist = getExpressionRes(40);
 
-        List<View> views = new ArrayList<View>();
+        List<View> views = new ArrayList<>();
         View gv1 = getGridChildView(1);
         View gv2 = getGridChildView(2);
         views.add(gv1);

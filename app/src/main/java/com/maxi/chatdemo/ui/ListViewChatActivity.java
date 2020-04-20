@@ -51,7 +51,7 @@ public class ListViewChatActivity extends BaseActivity {
 
     @Override
     protected void init() {
-        setTitle("Mom");
+        setTitle("媽媽");
         sendMessageHandler = new SendMessageHandler(this);
         tbAdapter = new ChatListViewAdapter(this);
         tbAdapter.setUserList(tblist);
@@ -122,6 +122,7 @@ public class ListViewChatActivity extends BaseActivity {
     }
 
     static class SendMessageHandler extends Handler {
+
         WeakReference<ListViewChatActivity> mActivity;
 
         SendMessageHandler(ListViewChatActivity activity) {
@@ -151,6 +152,12 @@ public class ListViewChatActivity extends BaseActivity {
                         theActivity.tbAdapter.notifyDataSetChanged();
                         theActivity.myList.setSelection(theActivity.tblist
                                 .size() - 1);
+                        theActivity.getmEditTextContent().setClickable(true);
+                        theActivity.getTbbv().setClickable(true);
+                        theActivity.getMess_et_click().setClickable(true);
+                        if (theActivity.getPlot_index() == 4) {
+                            theActivity.getPhoto().setClickable(true);
+                        }
                         break;
                     case PULL_TO_REFRESH_DOWN:
                         theActivity.pullList.refreshComplete();

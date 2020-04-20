@@ -72,8 +72,10 @@
             <Button
                 android:id="@+id/photo"
                 android:layout_width="0dp"
-                android:layout_height="32dp"
+                android:layout_height="24dp"
                 android:layout_weight="1"
+                android:background="@color/light_gray_11"
+                android:clickable="true"
                 android:text="影相"
                 android:textSize="12sp" />
 
