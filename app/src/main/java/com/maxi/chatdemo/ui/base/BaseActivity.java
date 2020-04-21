@@ -84,7 +84,13 @@ public abstract class BaseActivity extends Activity {
     public void setPlot_index(int plot_index) {
         if (plot_index < player_choice_short.length -1) {
             this.plot_index = plot_index;
+            mess_et_click.setClickable(true);
+            mEditTextContent.setClickable(true);
+            tbbv.setClickable(true);
             if (plot_index == 4) {
+                mess_et_click.setClickable(false);
+                mEditTextContent.setClickable(false);
+                tbbv.setClickable(false);
                 photo.setClickable(true);
                 photo.setBackgroundColor(getResources().getColor(R.color.red2));
             }
@@ -279,6 +285,9 @@ public abstract class BaseActivity extends Activity {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 photoIv.setVisibility(View.GONE);
+                photo.setClickable(false);
+                photo.setBackgroundColor(getResources().getColor(R.color.light_gray_11));
+                mess_et_click.setClickable(true);
             }
         };
         photo.setOnClickListener(new View.OnClickListener() {
@@ -286,8 +295,6 @@ public abstract class BaseActivity extends Activity {
             public void onClick(View view) {
                 photoIv.setVisibility(View.VISIBLE);
                 handler.sendEmptyMessageDelayed(0,4000);
-                photo.setClickable(false);
-                photo.setBackgroundColor(getResources().getColor(R.color.light_gray_11));
             }
         });
         photo.setClickable(false);

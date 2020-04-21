@@ -40,7 +40,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppBarTheme">
-        <activity android:name=".ui.MainActivity"
+        <activity
+            android:icon="@mipmap/ic_launcher"
+            android:name=".ui.MainActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
             <intent-filter>

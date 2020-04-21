@@ -112,7 +112,6 @@ public class ListViewChatActivity extends BaseActivity {
         });
         String[] answers = getMom_answer()[getPlot_index()][getChoice()];
         receriveMsgText(answers[0]);
-        setPlotFunc();
         super.init();
     }
 
@@ -152,12 +151,13 @@ public class ListViewChatActivity extends BaseActivity {
                         theActivity.tbAdapter.notifyDataSetChanged();
                         theActivity.myList.setSelection(theActivity.tblist
                                 .size() - 1);
-                        theActivity.getmEditTextContent().setClickable(true);
-                        theActivity.getTbbv().setClickable(true);
-                        theActivity.getMess_et_click().setClickable(true);
-                        if (theActivity.getPlot_index() == 4) {
-                            theActivity.getPhoto().setClickable(true);
-                        }
+//                        theActivity.getmEditTextContent().setClickable(true);
+//                        theActivity.getTbbv().setClickable(true);
+//                        theActivity.getMess_et_click().setClickable(true);
+//                        if (theActivity.getPlot_index() == 4) {
+//                            theActivity.getPhoto().setClickable(true);
+//                        }
+                        theActivity.setPlotFunc();
                         break;
                     case PULL_TO_REFRESH_DOWN:
                         theActivity.pullList.refreshComplete();
@@ -263,12 +263,11 @@ public class ListViewChatActivity extends BaseActivity {
                     for (String answer:answers) {
                         receriveMsgText(answer);
                         try {
-                            Thread.sleep(700);
+                            Thread.sleep(500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
-                    setPlotFunc();
                     break;
                 default:
                     break;
