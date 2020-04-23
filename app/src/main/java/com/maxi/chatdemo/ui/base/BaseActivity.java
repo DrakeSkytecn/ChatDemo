@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.maxi.chatdemo.R;
 import com.maxi.chatdemo.common.ChatConst;
 import com.maxi.chatdemo.db.ChatDbManager;
@@ -25,7 +24,6 @@ import com.maxi.chatdemo.utils.ScreenUtil;
 import com.maxi.chatdemo.widget.ChatBottomView;
 import com.maxi.chatdemo.widget.HeadIconSelectorView;
 import com.maxi.chatdemo.widget.pulltorefresh.PullToRefreshLayout;
-
 import java.io.File;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -33,8 +31,116 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 public abstract class BaseActivity extends Activity {
+
+    int group_index = 0;
+    int player_plot_index = 0;
+    int mom_plot_index = 0;
+    int MOM = 0;
+    int PLAYER = 1;
+    int CHOICE = 2;
+
+    int[][] pic_indexs = {
+            {0, PLAYER, 2},
+            {0, CHOICE, 1},
+            {1, PLAYER, 0},
+            {1, MOM, 1},
+            {1, PLAYER, 4},
+            {1, PLAYER, 5},
+            {1, PLAYER, 6}};
+
+    public String[][][] plots = {{{
+            "你在哪裡？",
+            "你為什麼不告訴我？",
+            "...無論如何，你現在在售貨亭見面嗎？"
+    },{
+            "剛從廁所出來",
+            "我以為你會等",
+            "好的"
+    }},{{
+            "不...我以前從未見過",
+            "好的，等你，注意",
+            "你好嗎？",
+            "",
+            "發生了什麼事？",
+            "哦，真的嗎？是燒食物的老方法，現在沒有多少人會使用它"
+    },{
+            "樹為什麼變得那樣？你看到了嗎？",
+            "那真是太奇怪了...什麼都沒有...我來了",
+            "一切都還好。",
+            "？？！！！？！",
+            "什麼都沒有，我只是看到一個染色的區域",
+            "哦，我看到這裡有一些木頭在草地上，好像有人在這裡燒烤過"
+    }}, {{
+            "什麼？",
+            "",
+            "什麼？",
+            "發生了什麼事？",
+            "快點。"
+    }, {
+            "哦，天哪，我剛剛看到了什麼……",
+            "一頭死鹿……等等……",
+            "…",
+            "是幻覺還是只是……",
+            "沒事。"
+    }},{{
+            "不要想太多，也許只是動物。",
+            "總之，快點。",
+            "兒子？"
+    }, {
+            "我覺得有人在跟著我……有人躲在那兒……",
+            "但是我不認為這是……",
+            "等等。現在聲音越來越近…"
+    }}, {{
+            "看起來怎麼樣？",
+            "兒子不要去那裡，我認為這很危險。"
+    }, {
+            "等等，媽媽，我看到一所房子",
+            "這是一間木屋，但是很笨重。等等，我給你發照片",
+            "但是也許有什麼..."
+    }}, {{
+            "你在那裡看到了什麼？",
+            "給我發照片嗎？"
+    }, {
+            "...",
+            "...一個家庭...我不知道為什麼，我覺得我很早以前就認識他們。"
+    }}, {{
+            "這是什麼",
+            "...馬上離開。",
+            "躲起來！"
+    }, {
+            "還有別的…",
+            "有人來了"
+    }}, {{
+            "請盡快來",
+            "",
+            "一定要小心。"
+    }, {
+            "讓我確認現在是安全的",
+            "當然",
+            "我剛下車，我會小心的。"
+    }},{{
+            "那好，快過來。",
+            "兒子？",
+            "回答我",
+            "兒子？！",
+            "你還好嗎？"
+    }, {
+            "我認為那個人已經走了。",
+            "",
+            ""
+    }}};
+
+    public String[][] choices = {
+            {"左", "右"},
+            {"更近看", "走開"},
+            {"他看到了怪物的幻覺，然後意識到那是他bf的死屍，接受了錯誤並接受了事實，他被幻覺吞噬了，成為了怪物", "他不想被吞下，他被拉到河床，然後被地板上的東西絆倒，然後頭部撞到石頭死了"},
+            {"讓我檢查一下。", "無論如何，我來了。"},
+            {"我將其拿下", "我將其留在這裡"},
+            {"藏在壁櫥裡", "躲在門後"}
+    };
+
+    public int[] pics = {R.drawable.bg_image};
 
     //玩家的選項放在這裏
     public String[][] player_choice_short = {
