@@ -110,14 +110,15 @@ public class ListViewChatActivity extends BaseActivity {
 
             }
         });
-        String[] answers = getMom_answer()[getPlot_index()][getChoice()];
-        receriveMsgText(answers[0]);
+//        String[] answers = getMom_answer()[getPlot_index()][getChoice()];
+        receriveMsgText(getMomPlot());
         super.init();
     }
 
     void setPlotFunc() {
-        setPlot_index(getPlot_index()+1);
-        setPlot();
+//        addPlayerIndex();
+//        setPlot_index(getPlot_index()+1);
+//        setPlotView();
     }
 
     static class SendMessageHandler extends Handler {
@@ -145,19 +146,17 @@ public class ListViewChatActivity extends BaseActivity {
                         theActivity.tbAdapter.notifyDataSetChanged();
                         theActivity.myList.setSelection(theActivity.tblist
                                 .size() - 1);
+                        theActivity.addPlayerIndex();
+                        theActivity.setPlotView();
                         break;
                     case RECERIVE_OK:
                         theActivity.tbAdapter.isPicRefresh = true;
                         theActivity.tbAdapter.notifyDataSetChanged();
                         theActivity.myList.setSelection(theActivity.tblist
                                 .size() - 1);
-//                        theActivity.getmEditTextContent().setClickable(true);
-//                        theActivity.getTbbv().setClickable(true);
-//                        theActivity.getMess_et_click().setClickable(true);
-//                        if (theActivity.getPlot_index() == 4) {
-//                            theActivity.getPhoto().setClickable(true);
-//                        }
-                        theActivity.setPlotFunc();
+                        theActivity.addMomIndex();
+//                        theActivity.addPlayerIndex();
+//                        theActivity.setPlotView();
                         break;
                     case PULL_TO_REFRESH_DOWN:
                         theActivity.pullList.refreshComplete();
@@ -259,15 +258,17 @@ public class ListViewChatActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    String[] answers = getMom_answer()[getPlot_index()][getChoice()];
-                    for (String answer:answers) {
-                        receriveMsgText(answer);
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    String answer = getMomPlot();
+                    receriveMsgText(answer);
+//                    String[] answers = getMom_answer()[getPlot_index()][getChoice()];
+//                    for (String answer:answers) {
+//                        receriveMsgText(answer);
+//                        try {
+//                            Thread.sleep(500);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
                     break;
                 default:
                     break;

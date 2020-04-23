@@ -39,15 +39,27 @@ public abstract class BaseActivity extends Activity {
     int MOM = 0;
     int PLAYER = 1;
     int CHOICE = 2;
+    int role = 1;
 
-    int[][] pic_indexs = {
-            {0, PLAYER, 2},
-            {0, CHOICE, 1},
-            {1, PLAYER, 0},
-            {1, MOM, 1},
-            {1, PLAYER, 4},
-            {1, PLAYER, 5},
-            {1, PLAYER, 6}};
+    public void setAllIndexs() {
+        if (group_index < plots.length - 1) {
+            group_index++;
+            player_plot_index = 0;
+            mom_plot_index = 0;
+        }
+    }
+
+    public void addMomIndex() {
+        if (mom_plot_index < plots[group_index][0].length -1) {
+            mom_plot_index++;
+        }
+    }
+
+    public void addPlayerIndex() {
+        if (player_plot_index < plots[group_index][1].length -1) {
+            player_plot_index++;
+        }
+    }
 
     public String[][][] plots = {{{
             "你在哪裡？",
@@ -131,16 +143,85 @@ public abstract class BaseActivity extends Activity {
             ""
     }}};
 
+    public String getMomPlot() {
+        return plots[group_index][MOM][mom_plot_index];
+    }
+
+    public String getPlayerPlot() {
+        return plots[group_index][PLAYER][player_plot_index];
+    }
+
+    protected void setPlotView() {
+        if (role == PLAYER) {
+            choice1.setText(getPlayerPlot());
+        } else if (role == CHOICE) {
+            String[] c = getOnechoice();
+            choice1.setText(c[0]);
+            choice2.setText(c[1]);
+        }
+//        choice2.setText();
+//        if (plot_index < player_choice_short.length) {
+//            if (player_choice_short[plot_index].length == 1) {
+//                choice2.setVisibility(View.GONE);
+//                choice1.setText(player_choice_short[plot_index][0]);
+//            } else {
+//                choice2.setVisibility(View.VISIBLE);
+//                choice1.setText(player_choice_short[plot_index][0]);
+//                choice2.setText(player_choice_short[plot_index][1]);
+//            }
+//        } else {
+//            plot_index = 0;
+//        }
+    }
+
+    int[][] choice_indexs = {
+            {0, PLAYER, 2},
+            {1, MOM, 5}
+    };
+
     public String[][] choices = {
             {"左", "右"},
             {"更近看", "走開"},
-            {"他看到了怪物的幻覺，然後意識到那是他bf的死屍，接受了錯誤並接受了事實，他被幻覺吞噬了，成為了怪物", "他不想被吞下，他被拉到河床，然後被地板上的東西絆倒，然後頭部撞到石頭死了"},
+            {"被幻覺吞噬", "避免被幻想誤吞"},
             {"讓我檢查一下。", "無論如何，我來了。"},
             {"我將其拿下", "我將其留在這裡"},
             {"藏在壁櫥裡", "躲在門後"}
     };
 
-    public int[] pics = {R.drawable.bg_image};
+    public String[] getOnechoice() {
+        for (int i = 0; i < choice_indexs.length; i++) {
+            if (choice_indexs[i][0] == group_index && (choice_indexs[i][2] == player_plot_index | choice_indexs[i][2] == mom_plot_index)) {
+                return choices[i];
+            }
+        }
+        return null;
+    };
+
+    public int[] pics = {R.drawable.pic1, R.drawable.pic2};
+
+    int[][] pic_indexs = {
+            {0, PLAYER, 2},
+            {0, CHOICE, 1},
+            {1, PLAYER, 0},
+            {1, MOM, 1},
+            {1, PLAYER, 4},
+            {1, PLAYER, 5},
+            {1, PLAYER, 6},
+            {2, CHOICE, 0},
+            {2, PLAYER, 1},
+            {3, PLAYER, 2},
+            {3, MOM, 2},
+            {4, CHOICE, }};
+
+    public int getPic() {
+        for (int i = 0; i < pic_indexs.length; i++) {
+            if (pic_indexs[i][0] == group_index && (pic_indexs[i][2] == player_plot_index | pic_indexs[i][2] == mom_plot_index)) {
+                return pics[i];
+            }
+        }
+        return -1;
+    };
+
 
     //玩家的選項放在這裏
     public String[][] player_choice_short = {
@@ -174,6 +255,7 @@ public abstract class BaseActivity extends Activity {
             {{"hello111111"}, {"hahahahaha", "hahahahaha"}},
             {{"hello111111"}, {"hahahahaha", "hahahahaha"}},
     };
+
 
     public String[][][] getMom_answer() {
         return mom_answer;
@@ -309,7 +391,7 @@ public abstract class BaseActivity extends Activity {
         tbbv = (ChatBottomView) findViewById(R.id.other_lv);
         choice1 = tbbv.getImageGroup();
         choice2 = tbbv.getCameraGroup();
-        setPlot();
+        setPlotView();
         initActionBar();
     }
 
@@ -358,7 +440,8 @@ public abstract class BaseActivity extends Activity {
             public void onClick(int from) {
                 switch (from) {
                     case ChatBottomView.FROM_GALLERY:
-                        mEditTextContent.setText(player_choice[plot_index][0]);
+//                        mEditTextContent.setText(player_choice[plot_index][0]);
+                        mEditTextContent.setText(getPlayerPlot());
                         choice = 0;
                         break;
                     case ChatBottomView.FROM_CAMERA:
@@ -373,11 +456,12 @@ public abstract class BaseActivity extends Activity {
             @Override
             public void onClick(View view) {
                 if (!mEditTextContent.getText().toString().isEmpty()) {
+                    tbbv.setVisibility(View.GONE);
 //                    mEditTextContent.setClickable(false);
 //                    tbbv.setClickable(false);
-                    mess_et_click.callOnClick();
-                    mess_et_click.setClickable(false);
-                    photo.setClickable(false);
+//                    mess_et_click.callOnClick();
+//                    mess_et_click.setClickable(false);
+//                    photo.setClickable(false);
                     sendMessage();
 //                    if(plot_index<player_choice_short.length-1) {
 //                        plot_index++;
