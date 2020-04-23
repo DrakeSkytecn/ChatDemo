@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.maxi.chatdemo.R;
 import com.maxi.chatdemo.common.ChatConst;
 import com.maxi.chatdemo.db.ChatDbManager;
@@ -24,6 +25,7 @@ import com.maxi.chatdemo.utils.ScreenUtil;
 import com.maxi.chatdemo.widget.ChatBottomView;
 import com.maxi.chatdemo.widget.HeadIconSelectorView;
 import com.maxi.chatdemo.widget.pulltorefresh.PullToRefreshLayout;
+
 import java.io.File;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -36,27 +38,29 @@ public abstract class BaseActivity extends Activity {
     int group_index = 0;
     int player_plot_index = 0;
     int mom_plot_index = 0;
-    int MOM = 0;
-    int PLAYER = 1;
-    int CHOICE = 2;
+    final public static int MOM = 0;
+    final public static int PLAYER = 1;
+    final public static int CHOICE = 2;
     int role = 1;
 
-    public void setAllIndexs() {
-        if (group_index < plots.length - 1) {
-            group_index++;
-            player_plot_index = 0;
-            mom_plot_index = 0;
-        }
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+    public void setAllIndexs(int new_group_index) {
+        group_index = new_group_index;
+        player_plot_index = 0;
+        mom_plot_index = 0;
     }
 
     public void addMomIndex() {
-        if (mom_plot_index < plots[group_index][0].length -1) {
+        if (mom_plot_index < plots[group_index][0].length - 1) {
             mom_plot_index++;
         }
     }
 
     public void addPlayerIndex() {
-        if (player_plot_index < plots[group_index][1].length -1) {
+        if (player_plot_index < plots[group_index][1].length - 1) {
             player_plot_index++;
         }
     }
@@ -65,18 +69,18 @@ public abstract class BaseActivity extends Activity {
             "你在哪裡？",
             "你為什麼不告訴我？",
             "...無論如何，你現在在售貨亭見面嗎？"
-    },{
+    }, {
             "剛從廁所出來",
             "我以為你會等",
             "好的"
-    }},{{
+    }}, {{
             "不...我以前從未見過",
             "好的，等你，注意",
             "你好嗎？",
             "",
             "發生了什麼事？",
             "哦，真的嗎？是燒食物的老方法，現在沒有多少人會使用它"
-    },{
+    }, {
             "樹為什麼變得那樣？你看到了嗎？",
             "那真是太奇怪了...什麼都沒有...我來了",
             "一切都還好。",
@@ -95,7 +99,7 @@ public abstract class BaseActivity extends Activity {
             "…",
             "是幻覺還是只是……",
             "沒事。"
-    }},{{
+    }}, {{
             "不要想太多，也許只是動物。",
             "總之，快點。",
             "兒子？"
@@ -131,7 +135,7 @@ public abstract class BaseActivity extends Activity {
             "讓我確認現在是安全的",
             "當然",
             "我剛下車，我會小心的。"
-    }},{{
+    }}, {{
             "那好，快過來。",
             "兒子？",
             "回答我",
@@ -190,17 +194,25 @@ public abstract class BaseActivity extends Activity {
 
     public String[] getOnechoice() {
         for (int i = 0; i < choice_indexs.length; i++) {
-            if (choice_indexs[i][0] == group_index && (choice_indexs[i][2] == player_plot_index | choice_indexs[i][2] == mom_plot_index)) {
-                return choices[i];
+            if (role == PLAYER) {
+                if (choice_indexs[i][0] == 0 && choice_indexs[i][2] == player_plot_index) {
+                    return choices[i];
+                }
+            } else {
+                if (choice_indexs[i][0] == 0 && choice_indexs[i][2] == mom_plot_index) {
+                    return choices[i];
+                }
             }
         }
         return null;
-    };
+    }
+
+    ;
 
     public int[] pics = {R.drawable.pic1, R.drawable.pic2};
 
     int[][] pic_indexs = {
-            {0, PLAYER, 2},
+            {0, PLAYER, 3},
             {0, CHOICE, 1},
             {1, PLAYER, 0},
             {1, MOM, 1},
@@ -211,17 +223,16 @@ public abstract class BaseActivity extends Activity {
             {2, PLAYER, 1},
             {3, PLAYER, 2},
             {3, MOM, 2},
-            {4, CHOICE, }};
+            {4, CHOICE,}};
 
-    public int getPic() {
+    public int getPics() {
         for (int i = 0; i < pic_indexs.length; i++) {
-            if (pic_indexs[i][0] == group_index && (pic_indexs[i][2] == player_plot_index | pic_indexs[i][2] == mom_plot_index)) {
+            if (pic_indexs[i][0] == group_index && pic_indexs[i][1] == role && (pic_indexs[i][2] == player_plot_index | pic_indexs[i][2] == mom_plot_index)) {
                 return pics[i];
             }
         }
         return -1;
-    };
-
+    }
 
     //玩家的選項放在這裏
     public String[][] player_choice_short = {
@@ -270,7 +281,7 @@ public abstract class BaseActivity extends Activity {
     int plot_index = 0;
 
     public void setPlot_index(int plot_index) {
-        if (plot_index < player_choice_short.length -1) {
+        if (plot_index < player_choice_short.length - 1) {
             this.plot_index = plot_index;
             mess_et_click.setClickable(true);
             mEditTextContent.setClickable(true);
@@ -349,6 +360,8 @@ public abstract class BaseActivity extends Activity {
 
     protected abstract void sendMessage();
 
+    protected abstract void sendMessageWithoutReceive();
+
     protected abstract void loadRecords();
 
     @Override
@@ -411,19 +424,19 @@ public abstract class BaseActivity extends Activity {
     }
 
     protected void init() {
-        mEditTextContent.setOnKeyListener(onKeyListener);
+//        mEditTextContent.setOnKeyListener(onKeyListener);
         mChatDbManager = new ChatDbManager();
         PullToRefreshLayout.pulltorefreshNotifier pullNotifier = new PullToRefreshLayout.pulltorefreshNotifier() {
             @Override
             public void onPull() {
-                                downLoad();
+                downLoad();
             }
         };
         mess_et_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (tbbv.getVisibility() == View.GONE
-                        ) {
+                ) {
                     mEditTextContent.setVisibility(View.VISIBLE);
                     tbbv.setVisibility(View.VISIBLE);
                 } else {
@@ -462,7 +475,14 @@ public abstract class BaseActivity extends Activity {
 //                    mess_et_click.callOnClick();
 //                    mess_et_click.setClickable(false);
 //                    photo.setClickable(false);
-                    sendMessage();
+                    setRole(PLAYER);
+                    String[] onechoice = getOnechoice();
+                    getPics();
+                    if (onechoice != null) {
+                        sendMessageWithoutReceive();
+                    } else {
+                        sendMessage();
+                    }
 //                    if(plot_index<player_choice_short.length-1) {
 //                        plot_index++;
 //                        setPlot();
@@ -484,7 +504,7 @@ public abstract class BaseActivity extends Activity {
             @Override
             public void onClick(View view) {
                 photoIv.setVisibility(View.VISIBLE);
-                handler.sendEmptyMessageDelayed(0,4000);
+                handler.sendEmptyMessageDelayed(0, 4000);
             }
         });
         photo.setClickable(false);
@@ -727,18 +747,6 @@ public abstract class BaseActivity extends Activity {
         return tbub;
     }
 
-    private View.OnKeyListener onKeyListener = new View.OnKeyListener() {
-
-        @Override
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_ENTER
-                    && event.getAction() == KeyEvent.ACTION_DOWN) {
-                sendMessage();
-                return true;
-            }
-            return false;
-        }
-    };
 
     @SuppressLint("SimpleDateFormat")
     public static String returnTime() {

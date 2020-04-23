@@ -217,6 +217,20 @@ public class ListViewChatActivity extends BaseActivity {
     }
 
     @Override
+    protected void sendMessageWithoutReceive() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String content = mEditTextContent.getText().toString();
+                tblist.add(getTbub(userName, ChatListViewAdapter.TO_USER_MSG, content, null, null,
+                        null, null, null, 0f, ChatConst.COMPLETED));
+                sendMessageHandler.sendEmptyMessage(SEND_OK);
+                ListViewChatActivity.this.content = content;
+            }
+        }).start();
+    }
+
+    @Override
     protected void sendMessage() {
         new Thread(new Runnable() {
             @Override
@@ -226,7 +240,7 @@ public class ListViewChatActivity extends BaseActivity {
                         null, null, null, 0f, ChatConst.COMPLETED));
                 sendMessageHandler.sendEmptyMessage(SEND_OK);
                 ListViewChatActivity.this.content = content;
-                receriveHandler.sendEmptyMessageDelayed(0, 1000);
+                receriveHandler.sendEmptyMessageDelayed(0, 2000);
             }
         }).start();
     }
@@ -235,6 +249,7 @@ public class ListViewChatActivity extends BaseActivity {
 
     protected void receriveMsgText(final String content) {
         Log.i("receriveMsgText", content);
+        setRole(MOM);
         new Thread(new Runnable() {
             @Override
             public void run() {
