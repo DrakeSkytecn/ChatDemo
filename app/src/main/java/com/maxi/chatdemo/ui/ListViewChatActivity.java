@@ -126,7 +126,7 @@ public class ListViewChatActivity extends BaseActivity {
         WeakReference<ListViewChatActivity> mActivity;
 
         SendMessageHandler(ListViewChatActivity activity) {
-            mActivity = new WeakReference<ListViewChatActivity>(activity);
+            mActivity = new WeakReference<>(activity);
         }
 
         @Override
@@ -148,6 +148,7 @@ public class ListViewChatActivity extends BaseActivity {
                                 .size() - 1);
                         theActivity.addPlayerIndex();
                         theActivity.setPlotView();
+                        theActivity.showPic();
                         break;
                     case RECERIVE_OK:
                         theActivity.tbAdapter.isPicRefresh = true;
@@ -155,6 +156,7 @@ public class ListViewChatActivity extends BaseActivity {
                         theActivity.myList.setSelection(theActivity.tblist
                                 .size() - 1);
                         theActivity.addMomIndex();
+                        theActivity.mess_et_click.setClickable(true);
 //                        theActivity.addPlayerIndex();
 //                        theActivity.setPlotView();
                         break;
