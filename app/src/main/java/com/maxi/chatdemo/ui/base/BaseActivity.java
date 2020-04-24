@@ -161,6 +161,7 @@ public abstract class BaseActivity extends Activity {
             if (choice == 0) {
                 setAllIndexs(1);
             } else {
+                setRole(PLAYER);
                 setAllIndexs(1);
             }
         } else if (group_index == 1) {
@@ -203,19 +204,6 @@ public abstract class BaseActivity extends Activity {
             choice2.setText(c[1]);
             choice2.setVisibility(View.VISIBLE);
         }
-//        choice2.setText();
-//        if (plot_index < player_choice_short.length) {
-//            if (player_choice_short[plot_index].length == 1) {
-//                choice2.setVisibility(View.GONE);
-//                choice1.setText(player_choice_short[plot_index][0]);
-//            } else {
-//                choice2.setVisibility(View.VISIBLE);
-//                choice1.setText(player_choice_short[plot_index][0]);
-//                choice2.setText(player_choice_short[plot_index][1]);
-//            }
-//        } else {
-//            plot_index = 0;
-//        }
     }
 
     int[][] choice_indexs = {
@@ -271,17 +259,17 @@ public abstract class BaseActivity extends Activity {
 //            if (pic_indexs[i][0] == group_index && pic_indexs[i][1] == role && (pic_indexs[i][2] == player_plot_index | pic_indexs[i][2] == mom_plot_index)) {
 //                return pics[i];
 //            }
-            if (pic_indexs[i][1] == PLAYER) {
+            if (role == pic_indexs[i][1]) {
                 if (pic_indexs[i][0] == group_index && pic_indexs[i][2] == player_plot_index) {
                     pic_mode = pic_indexs[i][3];
                     return pics[i];
                 }
-            } else if (pic_indexs[i][1] == MOM) {
+            } else if (role == pic_indexs[i][1]) {
                 if (pic_indexs[i][0] == group_index && pic_indexs[i][2] == mom_plot_index) {
                     pic_mode = pic_indexs[i][3];
                     return pics[i];
                 }
-            } else if (pic_indexs[i][1] == CHOICE && pic_indexs[i][2] == player_plot_index) {
+            } else if (role == pic_indexs[i][1] && pic_indexs[i][2] == player_plot_index) {
                 if (pic_indexs[i][0] == group_index) {
                     pic_mode = pic_indexs[i][3];
                     return pics[i];
@@ -495,7 +483,7 @@ public abstract class BaseActivity extends Activity {
                     mess_et_click.setClickable(false);
                     photo.setClickable(false);
                     String[] onechoice = getOnechoice();
-                    int pics = getPics();
+//                    int pics = getPics();
                     if (onechoice != null) {
                         setRole(CHOICE);
                         sendMessageWithoutReceive();

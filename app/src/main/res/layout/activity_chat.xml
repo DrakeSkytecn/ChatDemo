@@ -4,7 +4,7 @@
     android:id="@+id/layout_tongbao_rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_image">
+    android:background="@color/light_gray_1">
 
     <com.maxi.chatdemo.widget.pulltorefresh.PullToRefreshLayout
         android:id="@+id/content_lv"
@@ -39,7 +39,7 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="32dp"
-                android:layout_weight="4">
+                android:layout_weight="9">
 
                 <EditText
                     android:id="@+id/mess_et"
@@ -65,19 +65,22 @@
                 android:id="@+id/send"
                 android:layout_width="0dp"
                 android:layout_height="32dp"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:text="傳送"
-                android:textSize="12sp" />
+                android:text=""
+                android:textSize="12sp"
+                android:background="@mipmap/send" />
 
             <Button
                 android:id="@+id/photo"
                 android:layout_width="0dp"
-                android:layout_height="24dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:background="@color/light_gray_11"
                 android:clickable="true"
-                android:text="影相"
-                android:textSize="12sp" />
+                android:text=""
+                android:textSize="12sp"
+                android:background="@mipmap/photo" />
 
         </LinearLayout>
 
