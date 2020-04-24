@@ -146,9 +146,9 @@ public class ListViewChatActivity extends BaseActivity {
                         theActivity.tbAdapter.notifyDataSetChanged();
                         theActivity.myList.setSelection(theActivity.tblist
                                 .size() - 1);
+                        theActivity.showPic();
                         theActivity.addPlayerIndex();
                         theActivity.setPlotView();
-                        theActivity.showPic();
                         break;
                     case RECERIVE_OK:
                         theActivity.tbAdapter.isPicRefresh = true;

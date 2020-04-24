@@ -157,8 +157,12 @@ public abstract class BaseActivity extends Activity {
      * the logic of choice branch
      */
     void roadMap() {
-        if (group_index == 0 && choice == 1) {
-            setAllIndexs(1);
+        if (group_index == 0) {
+            if (choice == 0) {
+                setAllIndexs(1);
+            } else {
+                setAllIndexs(1);
+            }
         } else if (group_index == 1) {
             if (choice == 0) {
                 setAllIndexs(2);
@@ -250,9 +254,9 @@ public abstract class BaseActivity extends Activity {
 
     int[][] pic_indexs = {
             {0, PLAYER, 2, AUTO_PIC},
-            {0, CHOICE, 1, AUTO_PIC},
+            {0, CHOICE, 2, AUTO_PIC},
             {1, PLAYER, 0, AUTO_PIC},
-            {1, MOM, 1, AUTO_PIC},
+            {1, MOM, 2, AUTO_PIC},
             {1, PLAYER, 4, AUTO_PIC},
             {1, PLAYER, 5, AUTO_PIC},
             {1, PLAYER, 6, AUTO_PIC},
@@ -267,13 +271,18 @@ public abstract class BaseActivity extends Activity {
 //            if (pic_indexs[i][0] == group_index && pic_indexs[i][1] == role && (pic_indexs[i][2] == player_plot_index | pic_indexs[i][2] == mom_plot_index)) {
 //                return pics[i];
 //            }
-            if (role == PLAYER) {
-                if (pic_indexs[i][0] == 0 && pic_indexs[i][2] == player_plot_index) {
+            if (pic_indexs[i][1] == PLAYER) {
+                if (pic_indexs[i][0] == group_index && pic_indexs[i][2] == player_plot_index) {
                     pic_mode = pic_indexs[i][3];
                     return pics[i];
                 }
-            } else {
-                if (pic_indexs[i][0] == 0 && pic_indexs[i][2] == mom_plot_index) {
+            } else if (pic_indexs[i][1] == MOM) {
+                if (pic_indexs[i][0] == group_index && pic_indexs[i][2] == mom_plot_index) {
+                    pic_mode = pic_indexs[i][3];
+                    return pics[i];
+                }
+            } else if (pic_indexs[i][1] == CHOICE && pic_indexs[i][2] == player_plot_index) {
+                if (pic_indexs[i][0] == group_index) {
                     pic_mode = pic_indexs[i][3];
                     return pics[i];
                 }
@@ -288,12 +297,13 @@ public abstract class BaseActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
+                    photoIv.setImageDrawable(getResources().getDrawable(pic_id));
                     photoIv.setVisibility(View.VISIBLE);
                     clearPic();
                     break;
                 case 1:
                     photoIv.setVisibility(View.GONE);
-                    showPic();
+//                    showPic();
                     break;
                 default:
                     break;
@@ -301,71 +311,7 @@ public abstract class BaseActivity extends Activity {
         }
     };
 
-//    //玩家的選項放在這裏
-//    public String[][] player_choice_short = {
-//            {""},
-//            {"剛從廁所出來"},
-//            {"我以為你會等"},
-//            {"好的"},
-//            {"left", "right"},
-//            {"left", "right"},
-//            {"left", "right"}
-//    };
-
-//    //玩家的Plot放在這裏
-//    public String[][] player_choice = {
-//            {""},
-//            {"剛從廁所出來"},
-//            {"我以為你會等"},
-//            {"好的"},
-//            {"left", "right"},
-//            {"left", "right"},
-//            {"left", "right"}
-//    };
-
-//    //媽媽的Plot放在這裏
-//    public String[][][] mom_answer = {
-//            {{"你在哪裡？"}},
-//            {{"你為什麼不告訴我？"}},
-//            {{"...無論如何，你現在在售貨亭見面嗎？"}},
-//            {{"hello111111"}, {"hahahahaha", "hahahahaha"}},
-//            {{"hello111111"}, {"hahahahaha", "hahahahaha"}},
-//            {{"hello111111"}, {"hahahahaha", "hahahahaha"}},
-//            {{"hello111111"}, {"hahahahaha", "hahahahaha"}},
-//    };
-
-
-//    public String[][][] getMom_answer() {
-//        return mom_answer;
-//    }
-
     int choice;
-
-//    public int getChoice() {
-//        return choice;
-//    }
-
-//    int plot_index = 0;
-
-//    public void setPlot_index(int plot_index) {
-//        if (plot_index < player_choice_short.length - 1) {
-//            this.plot_index = plot_index;
-//            mess_et_click.setClickable(true);
-//            mEditTextContent.setClickable(true);
-//            tbbv.setClickable(true);
-//            if (plot_index == 4) {
-//                mess_et_click.setClickable(false);
-//                mEditTextContent.setClickable(false);
-//                tbbv.setClickable(false);
-//                photo.setClickable(true);
-//                photo.setBackgroundColor(getResources().getColor(R.color.red2));
-//            }
-//        }
-//    }
-
-//    public int getPlot_index() {
-//        return plot_index;
-//    }
 
     public PullToRefreshLayout pullList;
     public boolean isDown = false;
@@ -473,27 +419,12 @@ public abstract class BaseActivity extends Activity {
         initActionBar();
     }
 
-//    protected void setPlot() {
-//        if (plot_index < player_choice_short.length) {
-//            if (player_choice_short[plot_index].length == 1) {
-//                choice2.setVisibility(View.GONE);
-//                choice1.setText(player_choice_short[plot_index][0]);
-//            } else {
-//                choice2.setVisibility(View.VISIBLE);
-//                choice1.setText(player_choice_short[plot_index][0]);
-//                choice2.setText(player_choice_short[plot_index][1]);
-//            }
-//        } else {
-//            plot_index = 0;
-//        }
-//    }
-
     int pic_id = -1;
 
     protected void showPic() {
         pic_id = getPics();
         if (pic_id != -1) {
-            if (pic_mode == 0) {
+            if (pic_mode == AUTO_PIC) {
                 autoPicHandler.sendEmptyMessageDelayed(0, 2000);
             } else {
                 photo.setBackgroundColor(getResources().getColor(R.color.red1));
@@ -504,6 +435,7 @@ public abstract class BaseActivity extends Activity {
 
     void clearPic() {
         autoPicHandler.sendEmptyMessageDelayed(1, 3000);
+        mess_et_click.setClickable(true);
     }
 
     protected void init() {
@@ -518,6 +450,7 @@ public abstract class BaseActivity extends Activity {
         mess_et_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setRole(PLAYER);
                 if (tbbv.getVisibility() == View.GONE) {
                     mEditTextContent.setVisibility(View.VISIBLE);
                     tbbv.setVisibility(View.VISIBLE);
@@ -533,16 +466,19 @@ public abstract class BaseActivity extends Activity {
             @SuppressLint("InlinedApi")
             @Override
             public void onClick(int from) {
-                if (role == PLAYER) {
+                if (choice2.getVisibility() == View.GONE) {
                     if (from == ChatBottomView.FROM_GALLERY) {
                         mEditTextContent.setText(getPlayerPlot());
                     }
-                } else if (role == CHOICE) {
+                } else if (choice2.getVisibility() == View.VISIBLE) { //two choices
+                    setRole(CHOICE);
                     if (from == ChatBottomView.FROM_GALLERY) {
                         choice = 0;
-                    } else if (from == ChatBottomView.FROM_GALLERY) {
+                    } else if (from == ChatBottomView.FROM_CAMERA) {
                         choice = 1;
                     }
+                    tbbv.setVisibility(View.GONE);
+                    showPic();
                     roadMap();
                 }
             }
