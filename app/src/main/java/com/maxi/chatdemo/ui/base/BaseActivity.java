@@ -135,30 +135,21 @@ public abstract class BaseActivity extends Activity {
             "...",
             "...一個家庭...我不知道為什麼，我覺得我很早以前就認識他們。"
     }}, {{
-            "這是什麼",
             "...馬上離開。",
             "躲起來！"
     }, {
-            "還有別的…",
+            "有人來了......",
             "有人來了"
     }}, {{
             "請盡快來",
-            "",
             "一定要小心。"
     }, {
             "讓我確認現在是安全的",
-            "當然",
-            "我剛下車，我會小心的。"
+            "當然\n我剛下車，我會小心的。"
     }}, {{
-            "那好，快過來。",
-            "兒子？",
-            "回答我",
-            "兒子？！",
-            "你還好嗎？"
+            "那好，快過來。\n兒子？\n回答我\n兒子？！\n你還好嗎？"
     }, {
-            "我認為那個人已經走了。",
-            "",
-            ""
+            "我認為那個人已經走了。"
     }}};
 
     /**
@@ -170,8 +161,6 @@ public abstract class BaseActivity extends Activity {
             if (choice == 0) {
                 Toast.makeText(this, "不是這樣，我記得她說要去自助服務亭", Toast.LENGTH_SHORT).show();
             } else {
-//                pic_id = R.drawable.pic2;
-//                autoPicHandler.sendEmptyMessageDelayed(0, 500);
                 setRole(PLAYER);
                 setAllIndexs(1);
                 setPlotView(null);
@@ -185,7 +174,6 @@ public abstract class BaseActivity extends Activity {
                 setAllIndexs(2);
                 setPlotView(null);
             } else {
-//                showPic();
                 setRole(PLAYER);
                 setAllIndexs(3);
                 setPlotView(null);
@@ -211,23 +199,53 @@ public abstract class BaseActivity extends Activity {
                 playerEndGIF(R.drawable.end2);
             }
         } else if (group_index == 4) {
-            mess_et_click.setClickable(false);
+            //{"4", "我將拍攝照片拿下", "我將照片留在此處", "0"}
             if (choice == 0) {
-                playerEndGIF(R.drawable.end1);
+                setRole(PLAYER);
+                setAllIndexs(5);
+                setPlotView(null);
             } else {
                 endIv.setImageResource(R.drawable.end3);
                 endIv.setVisibility(View.VISIBLE);
             }
+        } else if (group_index == 5) {
+            //{"5", "藏在壁櫥裡", "躲在門後", "0"}
+            if (choice == 0) {
+                setRole(PLAYER);
+                setAllIndexs(6);
+                setPlotView(null);
+            } else {
+                setRole(PLAYER);
+                setAllIndexs(7);
+                setPlotView(null);
+            }
         }
     }
 
-    void playerEndGIF(int id) {
+    public void playerEndGIF(int id) {
         endIv.setImageResource(id);
         endIv.setVisibility(View.VISIBLE);
         endGIFDrawable=(GifDrawable)endIv.getDrawable();
         endGIFDrawable.start();
         endGIFDrawable.setLoopCount(1);
     }
+
+    public Handler playerEndGIFHandler1 = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            playerEndGIF(msg.what);
+            playerEndGIFHandler2.sendEmptyMessageDelayed(R.drawable.end1,7000);
+        }
+    };
+
+    public Handler playerEndGIFHandler2 = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            playerEndGIF(msg.what);
+        }
+    };
 
     public String getMomPlot() throws ArrayIndexOutOfBoundsException {
         return plots[group_index][MOM][mom_plot_index];
@@ -259,7 +277,8 @@ public abstract class BaseActivity extends Activity {
             {1, MOM, 4},
             {2, PLAYER, 7},
             {3, MOM, 2},
-            {4, MOM, 2}
+            {4, MOM, 2},
+            {5, MOM, 2}
     };
 
     // choice content
@@ -268,8 +287,8 @@ public abstract class BaseActivity extends Activity {
             {"1", "更近看", "走開", "0"},
             {"2", "讓我檢查一下。", "無論如何，我來了。", "1"},
             {"3", "被幻覺吞噬", "避免被幻想誤吞", "0"},
-            {"5", "我將拍攝照片拿下", "我將照片留在此處", "0"},
-            {"6", "藏在壁櫥裡", "躲在門後", "0"}
+            {"4", "我將拍攝照片拿下", "我將照片留在此處", "0"},
+            {"5", "藏在壁櫥裡", "躲在門後", "0"}
     };
 
     public String[] getOnechoice() {
@@ -294,7 +313,6 @@ public abstract class BaseActivity extends Activity {
     public int[] pics = {
             R.drawable.pic1,
             R.drawable.pic2,
-            R.drawable.pic2,
             R.drawable.pic3,
             R.drawable.pic6
     };
@@ -302,9 +320,8 @@ public abstract class BaseActivity extends Activity {
     //picture location
     int[][] pic_indexs = {
             {0, PLAYER, 3, AUTO_PIC},
-            {0, CHOICE, 2, AUTO_PIC},
             {1, PLAYER, 1, AUTO_PIC},
-            {1, MOM, 1, AUTO_PIC},
+            {1, PLAYER, 3, AUTO_PIC},
             {1, PLAYER, 4, AUTO_PIC}
     };
 
@@ -329,7 +346,7 @@ public abstract class BaseActivity extends Activity {
         return -1;
     }
 
-    final Handler autoPicHandler = new Handler() {
+    final protected Handler autoPicHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -464,7 +481,7 @@ public abstract class BaseActivity extends Activity {
         initActionBar();
     }
 
-    int pic_id = -1;
+    protected int pic_id = -1;
 
     protected void showPic() {
         pic_id = getPics();

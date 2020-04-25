@@ -6,6 +6,8 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
+
+import com.maxi.chatdemo.R;
 import com.maxi.chatdemo.adapter.ChatListViewAdapter;
 import com.maxi.chatdemo.common.ChatConst;
 import com.maxi.chatdemo.db.ChatMessageBean;
@@ -39,6 +41,7 @@ public class ListViewChatActivity extends BaseActivity {
         myList.setAdapter(null);
         sendMessageHandler.removeCallbacksAndMessages(null);
         onechoice = null;
+        content = null;
         super.onDestroy();
     }
 
@@ -162,8 +165,15 @@ public class ListViewChatActivity extends BaseActivity {
                                 .size() - 1);
                         theActivity.addMomIndex();
                         theActivity.mess_et_click.setClickable(true);
-//                        theActivity.addPlayerIndex();
                         theActivity.setPlotView(onechoice);
+                        if ("一定要小心。".equals(content)) {
+                            theActivity.playerEndGIFHandler1.sendEmptyMessageDelayed(R.drawable.before1, 1000);
+//                            theActivity.playerEndGIF(R.drawable.before1);
+//                            theActivity.playerEndGIF(R.drawable.end1);
+                        } else if (content.contains("你還好嗎？")) {
+                            theActivity.pic_id = R.drawable.dead_end;
+                            theActivity.autoPicHandler.sendEmptyMessageDelayed(0,500);
+                        }
                         break;
                     case PULL_TO_REFRESH_DOWN:
                         theActivity.pullList.refreshComplete();
@@ -269,9 +279,10 @@ public class ListViewChatActivity extends BaseActivity {
         }).start();
     }
 
-    String content = "";
+    static String content = "";
 
     protected void receriveMsgText(final String content) {
+        this.content = content;
         Log.i("receriveMsgText", content);
         setRole(MOM);
         new Thread(new Runnable() {
