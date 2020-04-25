@@ -38,6 +38,7 @@ public class ListViewChatActivity extends BaseActivity {
         tbAdapter.notifyDataSetChanged();
         myList.setAdapter(null);
         sendMessageHandler.removeCallbacksAndMessages(null);
+        onechoice = null;
         super.onDestroy();
     }
 
@@ -151,7 +152,7 @@ public class ListViewChatActivity extends BaseActivity {
                         theActivity.addPlayerIndex();
                         theActivity.setPlotView(onechoice);
 //                        theActivity.setRole(PLAYER);
-//                        theActivity.showPic();
+                        theActivity.showPic();
 //                        theActivity.mess_et_click.setClickable(true);
                         break;
                     case RECERIVE_OK:

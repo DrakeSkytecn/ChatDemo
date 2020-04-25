@@ -104,7 +104,7 @@ public abstract class BaseActivity extends Activity {
             "樹為什麼變得那樣？你看到了嗎？",
             "那真是太奇怪了...什麼都沒有...我來了",
             "一切都還好。 \n？？！！！？！",
-            "什麼都沒有，我只是看到一個染色的區域。\n哦，我看到這裡有一些木頭在草地上，好像有人在這裡燒烤過"
+            "什麼都沒有，我只是看到好像血跡的染料殘留在樓梯上。\n哦，我看到這裡有一些木頭在草地上，好像有人在這裡燒烤過"
     }}, {{
             "什麼？",
             "什麼？",
@@ -118,7 +118,7 @@ public abstract class BaseActivity extends Activity {
             "是幻覺還是只是……",
             "沒事。",
             "等等，媽媽，我看到一所房子",
-            "這是一間木屋，但是很笨重。等等，我給你發照片",
+            "這是一間木屋，但是很笨重。",
             "但是也許有什麼..."
     }}, {{
             "不要想太多，也許只是動物。",
@@ -170,7 +170,9 @@ public abstract class BaseActivity extends Activity {
             if (choice == 0) {
                 Toast.makeText(this, "不是這樣，我記得她說要去自助服務亭", Toast.LENGTH_SHORT).show();
             } else {
-                showPic();
+                pic_id = R.drawable.pic2;
+                autoPicHandler.sendEmptyMessageDelayed(0, 500);
+//                showPic();
                 setRole(PLAYER);
                 setAllIndexs(1);
                 setPlotView(null);
@@ -178,7 +180,9 @@ public abstract class BaseActivity extends Activity {
         } else if (group_index == 1) {
             //{"1", "更近看", "走開", "0"}
             if (choice == 0) {
-                showPic();
+                pic_id = R.drawable.pic4;
+                autoPicHandler.sendEmptyMessageDelayed(0, 500);
+//                showPic();
                 setRole(PLAYER);
                 setAllIndexs(2);
                 setPlotView(null);
@@ -191,7 +195,9 @@ public abstract class BaseActivity extends Activity {
         } else if (group_index == 2) {
             //{"2", "讓我檢查一下。", "無論如何，我來了。", "1"}
             if (choice == 0) {
-                showPic();
+                pic_id = R.drawable.pic5;
+                autoPicHandler.sendEmptyMessageDelayed(0, 500);
+//                showPic();
                 setRole(PLAYER);
                 setAllIndexs(4);
                 setPlotView(null);
@@ -201,13 +207,14 @@ public abstract class BaseActivity extends Activity {
             }
         } else if (group_index == 3) {
             //{"3", "被幻覺吞噬", "避免被幻想誤吞", "0"}
+            mess_et_click.setClickable(false);
             if (choice == 0) {
                 playerEndGIF(R.drawable.end4);
             } else {
                 playerEndGIF(R.drawable.end2);
             }
         } else if (group_index == 4) {
-            //
+            mess_et_click.setClickable(false);
             if (choice == 0) {
                 playerEndGIF(R.drawable.end1);
             } else {
@@ -304,46 +311,36 @@ public abstract class BaseActivity extends Activity {
     public int[] pics = {
             R.drawable.pic1,
             R.drawable.pic2,
-            R.drawable.pic2,
-            R.drawable.pic2,
-            R.drawable.pic2,
-            R.drawable.pic2,
-            R.drawable.pic2,
-            R.drawable.pic2,
-            R.drawable.pic2,
-            R.drawable.pic2,
-            R.drawable.pic2,
-            R.drawable.pic2
+            R.drawable.pic3,
+            R.drawable.pic3
     };
 
     //picture location
     int[][] pic_indexs = {
-            {0, PLAYER, 2, AUTO_PIC},
+            {0, PLAYER, 3, AUTO_PIC},
             {0, CHOICE, 2, AUTO_PIC},
             {1, PLAYER, 0, AUTO_PIC},
-            {1, MOM, 2, AUTO_PIC},
-            {1, PLAYER, 4, AUTO_PIC},
-            {1, PLAYER, 5, AUTO_PIC},
-            {1, PLAYER, 6, AUTO_PIC},
-            {2, CHOICE, 0, AUTO_PIC},
-            {2, PLAYER, 1, AUTO_PIC},
-            {3, PLAYER, 2, AUTO_PIC},
-            {3, MOM, 2, AUTO_PIC},
-            {4, CHOICE, 0,AUTO_PIC}};
+            {1, MOM, 1, AUTO_PIC}
+    };
 
     public int getPics() {
         for (int i = 0; i < pic_indexs.length; i++) {
             if (pic_indexs[i][0] == group_index) {
-                if (pic_indexs[i][2] == player_plot_index) {
-                    pic_mode = pic_indexs[i][3];
-                    return pics[i];
-                } else if (pic_indexs[i][2] == mom_plot_index) {
-                    pic_mode = pic_indexs[i][3];
-                    return pics[i];
-                } else {
-                    pic_mode = pic_indexs[i][3];
-                    return pics[i];
+                if (pic_indexs[i][1] == PLAYER) {
+                    if(pic_indexs[i][2] == player_plot_index){
+                        pic_mode = pic_indexs[i][3];
+                        return pics[i];
+                    }
+                } else if (pic_indexs[i][1] == MOM) {
+                    if(pic_indexs[i][2] == mom_plot_index){
+                        pic_mode = pic_indexs[i][3];
+                        return pics[i];
+                    }
                 }
+//                else {
+//                    pic_mode = pic_indexs[i][3];
+//                    return pics[i];
+//                }
             }
 //            if (role == pic_indexs[i][1]) {
 //                if (pic_indexs[i][0] == group_index && pic_indexs[i][2] == player_plot_index) {
@@ -464,6 +461,7 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onDestroy() {
         cancelToast();
+        setAllIndexs(0);
         super.onDestroy();
     }
 
@@ -505,7 +503,8 @@ public abstract class BaseActivity extends Activity {
         pic_id = getPics();
         if (pic_id != -1) {
             if (pic_mode == AUTO_PIC) {
-                autoPicHandler.sendEmptyMessageDelayed(0, 1000);
+                mess_et_click.setClickable(false);
+                autoPicHandler.sendEmptyMessageDelayed(0, 500);
             } else {
                 photo.setBackgroundColor(getResources().getColor(R.color.red1));
                 photo.setClickable(true);
@@ -861,4 +860,6 @@ public abstract class BaseActivity extends Activity {
         String date = sDateFormat.format(new java.util.Date());
         return date;
     }
+
+
 }
