@@ -266,7 +266,8 @@ public abstract class BaseActivity extends Activity {
             {0, PLAYER, 3},
             {1, MOM, 4},
             {2, PLAYER, 7},
-            {3, MOM, 2}
+            {3, MOM, 2},
+            {4, MOM, 2}
     };
 
     // choice content
@@ -275,20 +276,20 @@ public abstract class BaseActivity extends Activity {
             {"1", "更近看", "走開", "0"},
             {"2", "讓我檢查一下。", "無論如何，我來了。", "1"},
             {"3", "被幻覺吞噬", "避免被幻想誤吞", "0"},
-            {"5", "我將拍攝照片拿下", "我將照片留在此處", "1"},
+            {"5", "我將拍攝照片拿下", "我將照片留在此處", "0"},
             {"6", "藏在壁櫥裡", "躲在門後", "0"}
     };
 
     public String[] getOnechoice() {
         for (int i = 0; i < choice_indexs.length; i++) {
             if (choice_indexs[i][0] == group_index) {
-                if (role == PLAYER) {
+                if (PLAYER == choice_indexs[i][1]) {
                     if (choice_indexs[i][2] == player_plot_index+1) {
 //                        setRole(CHOICE);
                         return choices[i];
                     }
                 }
-                if (role == MOM) {
+                if (MOM == choice_indexs[i][1]) {
                     if (choice_indexs[i][2] == mom_plot_index+1) {
 //                        setRole(CHOICE);
                         return choices[i];
@@ -574,7 +575,7 @@ public abstract class BaseActivity extends Activity {
 //                    mEditTextContent.setClickable(false);
 //                    tbbv.setClickable(false);
 //                    mess_et_click.callOnClick();
-//                    mess_et_click.setClickable(false);
+                    mess_et_click.setClickable(false);
                     photo.setClickable(false);
 //                    String[] onechoice = getOnechoice();
                     sendMessage();

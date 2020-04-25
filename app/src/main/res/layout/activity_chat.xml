@@ -50,6 +50,7 @@
                     android:background="@drawable/xmxq_tc_bj"
                     android:clickable="true"
                     android:focusable="false"
+                    android:hint="按下輸入"
                     android:imeOptions="actionSend"
                     android:inputType="text"
                     android:padding="5dp"
