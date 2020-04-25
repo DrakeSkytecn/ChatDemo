@@ -104,4 +104,12 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         android:src="@android:drawable/btn_star_big_on" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/endIv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:src="@drawable/end1"/>
+<!--    android:src="@drawable/yiba_location"-->
 </RelativeLayout>

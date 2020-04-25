@@ -135,10 +135,12 @@ public class ListViewChatActivity extends BaseActivity {
             if (theActivity != null) {
                 switch (msg.what) {
                     case REFRESH:
-                        theActivity.tbAdapter.isPicRefresh = true;
-                        theActivity.tbAdapter.notifyDataSetChanged();
-                        theActivity.myList.setSelection(theActivity.tblist
-                                .size() - 1);
+//                        theActivity.tbAdapter.isPicRefresh = true;
+//                        theActivity.tbAdapter.notifyDataSetChanged();
+//                        theActivity.myList.setSelection(theActivity.tblist
+//                                .size() - 1);
+                        theActivity.mess_et_click.setClickable(true);
+                        theActivity.setPlotView(onechoice);
                         break;
                     case SEND_OK:
                         theActivity.mEditTextContent.setText("");
@@ -147,9 +149,10 @@ public class ListViewChatActivity extends BaseActivity {
                         theActivity.myList.setSelection(theActivity.tblist
                                 .size() - 1);
                         theActivity.addPlayerIndex();
-                        theActivity.setPlotView();
-                        theActivity.setRole(PLAYER);
-                        theActivity.showPic();
+                        theActivity.setPlotView(onechoice);
+//                        theActivity.setRole(PLAYER);
+//                        theActivity.showPic();
+//                        theActivity.mess_et_click.setClickable(true);
                         break;
                     case RECERIVE_OK:
                         theActivity.tbAdapter.isPicRefresh = true;
@@ -159,7 +162,7 @@ public class ListViewChatActivity extends BaseActivity {
                         theActivity.addMomIndex();
                         theActivity.mess_et_click.setClickable(true);
 //                        theActivity.addPlayerIndex();
-//                        theActivity.setPlotView();
+                        theActivity.setPlotView(onechoice);
                         break;
                     case PULL_TO_REFRESH_DOWN:
                         theActivity.pullList.refreshComplete();
@@ -233,6 +236,8 @@ public class ListViewChatActivity extends BaseActivity {
         }).start();
     }
 
+    static String[] onechoice;
+
     @Override
     protected void sendMessage() {
         new Thread(new Runnable() {
@@ -241,9 +246,24 @@ public class ListViewChatActivity extends BaseActivity {
                 String content = mEditTextContent.getText().toString();
                 tblist.add(getTbub(userName, ChatListViewAdapter.TO_USER_MSG, content, null, null,
                         null, null, null, 0f, ChatConst.COMPLETED));
+                onechoice = getOnechoice();
                 sendMessageHandler.sendEmptyMessage(SEND_OK);
                 ListViewChatActivity.this.content = content;
-                receriveHandler.sendEmptyMessageDelayed(0, 2000);
+//                addPlayerIndex();
+//                setPlotView();
+                if (onechoice == null) {
+                    receriveHandler.sendEmptyMessageDelayed(0, 1000);
+                } else if (onechoice != null) {
+                    String s = onechoice[3];
+                    if (s.equals(MOM+"")) {
+//                        setRole(CHOICE);
+                        receriveHandler.sendEmptyMessageDelayed(0, 1000);
+                    } else {
+//                        setRole(CHOICE);
+                        sendMessageHandler.sendEmptyMessage(REFRESH);
+//                        setPlotView();
+                    }
+                }
             }
         }).start();
     }
@@ -276,17 +296,12 @@ public class ListViewChatActivity extends BaseActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    String answer = getMomPlot();
-                    receriveMsgText(answer);
-//                    String[] answers = getMom_answer()[getPlot_index()][getChoice()];
-//                    for (String answer:answers) {
-//                        receriveMsgText(answer);
-//                        try {
-//                            Thread.sleep(500);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
+                    try {
+                        String answer = getMomPlot();
+                        receriveMsgText(answer);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+
+                    }
                     break;
                 default:
                     break;

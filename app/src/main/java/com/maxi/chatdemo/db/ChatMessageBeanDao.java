@@ -56,7 +56,7 @@ public class ChatMessageBeanDao extends AbstractDao<ChatMessageBean, Long> {
                 "\"UserId\" TEXT," + // 1: UserId
                 "\"UserName\" TEXT," + // 2: UserName
                 "\"UserHeadIcon\" TEXT," + // 3: UserHeadIcon
-                "\"UserContent\" TEXT," + // 4: UserContent
+                "\"UserContent\" TEXT," + // end4: UserContent
                 "\"time\" TEXT," + // 5: time
                 "\"type\" INTEGER NOT NULL ," + // 6: type
                 "\"messagetype\" INTEGER NOT NULL ," + // 7: messagetype

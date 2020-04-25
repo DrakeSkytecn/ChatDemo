@@ -79,9 +79,6 @@ public class PullToRefreshLayout extends LinearLayout {
         }
     }
 
-    /**
-     * 这是View的方法，该方法不支持android低版本（2.2、2.3）的操作系统，所以手动复制过来以免强制退出
-     */
     public static int resolveSizeAndState(int size, int measureSpec,
                                           int childMeasuredState) {
         int result = size;
@@ -118,9 +115,7 @@ public class PullToRefreshLayout extends LinearLayout {
         return true;
     }
 
-    /**
-     * 这是拖拽效果的主要逻辑
-     */
+
     private class DragHelperCallback extends ViewDragHelper.Callback {
 
         @Override

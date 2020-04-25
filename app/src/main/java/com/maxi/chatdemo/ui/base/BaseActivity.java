@@ -33,6 +33,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
+
 public abstract class BaseActivity extends Activity {
 
     int group_index = 0;
@@ -46,6 +49,10 @@ public abstract class BaseActivity extends Activity {
     int pic_mode = 0;
     int role = 1;
 
+    public int getRole() {
+        return role;
+    }
+
     public void setRole(int role) {
         this.role = role;
     }
@@ -57,16 +64,25 @@ public abstract class BaseActivity extends Activity {
     }
 
     public void addMomIndex() {
-        if (mom_plot_index < plots[group_index][0].length - 1) {
+        if (mom_plot_index <= plots[group_index][0].length - 1) {
             mom_plot_index++;
         }
     }
 
     public void addPlayerIndex() {
-        if (player_plot_index < plots[group_index][1].length - 1) {
+        if (player_plot_index <= plots[group_index][1].length - 1) {
             player_plot_index++;
         }
     }
+
+//    {{
+//        "看起來怎麼樣？",
+//                "兒子不要去那裡，我認為這很危險。"
+//    }, {
+//        "等等，媽媽，我看到一所房子",
+//                "這是一間木屋，但是很笨重。等等，我給你發照片",
+//                "但是也許有什麼..."
+//    }},
 
     /**
      * mom and son plots
@@ -81,30 +97,29 @@ public abstract class BaseActivity extends Activity {
             "好的"
     }}, {{
             "不...我以前從未見過",
-            "好的，等你，注意",
-            "你好嗎？",
-            "",
+            "好的，等你，注意。你好嗎？",
             "發生了什麼事？",
             "哦，真的嗎？是燒食物的老方法，現在沒有多少人會使用它"
     }, {
             "樹為什麼變得那樣？你看到了嗎？",
             "那真是太奇怪了...什麼都沒有...我來了",
-            "一切都還好。",
-            "？？！！！？！",
-            "什麼都沒有，我只是看到一個染色的區域",
-            "哦，我看到這裡有一些木頭在草地上，好像有人在這裡燒烤過"
+            "一切都還好。 \n？？！！！？！",
+            "什麼都沒有，我只是看到一個染色的區域。\n哦，我看到這裡有一些木頭在草地上，好像有人在這裡燒烤過"
     }}, {{
             "什麼？",
-            "",
             "什麼？",
             "發生了什麼事？",
-            "快點。"
+            "快點。",
+            "看起來怎麼樣？",
+            "兒子不要去那裡，我認為這很危險。"
     }, {
             "哦，天哪，我剛剛看到了什麼……",
-            "一頭死鹿……等等……",
-            "…",
+            "一頭死鹿……等等……\n…",
             "是幻覺還是只是……",
-            "沒事。"
+            "沒事。",
+            "等等，媽媽，我看到一所房子",
+            "這是一間木屋，但是很笨重。等等，我給你發照片",
+            "但是也許有什麼..."
     }}, {{
             "不要想太多，也許只是動物。",
             "總之，快點。",
@@ -113,13 +128,6 @@ public abstract class BaseActivity extends Activity {
             "我覺得有人在跟著我……有人躲在那兒……",
             "但是我不認為這是……",
             "等等。現在聲音越來越近…"
-    }}, {{
-            "看起來怎麼樣？",
-            "兒子不要去那裡，我認為這很危險。"
-    }, {
-            "等等，媽媽，我看到一所房子",
-            "這是一間木屋，但是很笨重。等等，我給你發照片",
-            "但是也許有什麼..."
     }}, {{
             "你在那裡看到了什麼？",
             "給我發照片嗎？"
@@ -158,88 +166,156 @@ public abstract class BaseActivity extends Activity {
      */
     void roadMap() {
         if (group_index == 0) {
+            //{"0", "左", "右", "1"}
             if (choice == 0) {
-                setAllIndexs(1);
+                Toast.makeText(this, "不是這樣，我記得她說要去自助服務亭", Toast.LENGTH_SHORT).show();
             } else {
+                showPic();
                 setRole(PLAYER);
                 setAllIndexs(1);
+                setPlotView(null);
             }
         } else if (group_index == 1) {
+            //{"1", "更近看", "走開", "0"}
             if (choice == 0) {
+                showPic();
+                setRole(PLAYER);
                 setAllIndexs(2);
+                setPlotView(null);
             } else {
+                showPic();
+                setRole(PLAYER);
                 setAllIndexs(3);
+                setPlotView(null);
             }
         } else if (group_index == 2) {
+            //{"2", "讓我檢查一下。", "無論如何，我來了。", "1"}
             if (choice == 0) {
-                setAllIndexs(1);
+                showPic();
+                setRole(PLAYER);
+                setAllIndexs(4);
+                setPlotView(null);
             } else {
-                setAllIndexs(1);
+                endIv.setImageResource(R.drawable.normal_end);
+                endIv.setVisibility(View.VISIBLE);
             }
         } else if (group_index == 3) {
+            //{"3", "被幻覺吞噬", "避免被幻想誤吞", "0"}
             if (choice == 0) {
-                setAllIndexs(1);
+                playerEndGIF(R.drawable.end4);
             } else {
-                setAllIndexs(1);
+                playerEndGIF(R.drawable.end2);
+            }
+        } else if (group_index == 4) {
+            //
+            if (choice == 0) {
+                playerEndGIF(R.drawable.end1);
+            } else {
+                endIv.setImageResource(R.drawable.end3);
+                endIv.setVisibility(View.VISIBLE);
+//                playerEndGIF(R.drawable.end3);
             }
         }
-        setPlotView();
     }
 
-    public String getMomPlot() {
+    void playerEndGIF(int id) {
+        endIv.setImageResource(id);
+        endIv.setVisibility(View.VISIBLE);
+        endGIFDrawable=(GifDrawable)endIv.getDrawable();
+        endGIFDrawable.start();
+        endGIFDrawable.setLoopCount(1);
+    }
+
+    public String getMomPlot() throws ArrayIndexOutOfBoundsException {
         return plots[group_index][MOM][mom_plot_index];
     }
 
-    public String getPlayerPlot() {
+    public String getPlayerPlot() throws ArrayIndexOutOfBoundsException {
         return plots[group_index][PLAYER][player_plot_index];
     }
 
-    protected void setPlotView() {
-        if (role == PLAYER) {
+    protected void setPlotView(String[] c) {
+        if(c == null) {
             choice2.setVisibility(View.GONE);
-            choice1.setText(getPlayerPlot());
-        } else if (role == CHOICE) {
-            String[] c = getOnechoice();
-            choice1.setText(c[0]);
-            choice2.setText(c[1]);
+            try {
+                choice1.setText(getPlayerPlot());
+            } catch (ArrayIndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mess_et_click.setClickable(true);
+            choice1.setText(c[1]);
+            choice2.setText(c[2]);
             choice2.setVisibility(View.VISIBLE);
         }
+
+//        if (role == PLAYER) {
+//            choice2.setVisibility(View.GONE);
+//            choice1.setText(getPlayerPlot());
+//        } else if (role == CHOICE) {
+//            mess_et_click.setClickable(true);
+//            String[] c = getOnechoice();
+//            choice1.setText(c[1]);
+//            choice2.setText(c[2]);
+//            choice2.setVisibility(View.VISIBLE);
+//        }
     }
 
+    // choice location
     int[][] choice_indexs = {
-            {0, PLAYER, 2},
-            {1, MOM, 5}
+            {0, PLAYER, 3},
+            {1, MOM, 4},
+            {2, PLAYER, 7},
+            {3, MOM, 2}
     };
 
+    // choice content
     public String[][] choices = {
-            {"左", "右"},
-            {"更近看", "走開"},
-            {"被幻覺吞噬", "避免被幻想誤吞"},
-            {"讓我檢查一下。", "無論如何，我來了。"},
-            {"我將其拿下", "我將其留在這裡"},
-            {"藏在壁櫥裡", "躲在門後"}
+            {"0", "左", "右", "1"},
+            {"1", "更近看", "走開", "0"},
+            {"2", "讓我檢查一下。", "無論如何，我來了。", "1"},
+            {"3", "被幻覺吞噬", "避免被幻想誤吞", "0"},
+            {"5", "我將拍攝照片拿下", "我將照片留在此處", "1"},
+            {"6", "藏在壁櫥裡", "躲在門後", "0"}
     };
 
     public String[] getOnechoice() {
         for (int i = 0; i < choice_indexs.length; i++) {
-            if (role == PLAYER) {
-                if (choice_indexs[i][0] == 0 && choice_indexs[i][2] == player_plot_index) {
-                    return choices[i];
+            if (choice_indexs[i][0] == group_index) {
+                if (role == PLAYER) {
+                    if (choice_indexs[i][2] == player_plot_index+1) {
+//                        setRole(CHOICE);
+                        return choices[i];
+                    }
                 }
-            } else {
-                if (choice_indexs[i][0] == 0 && choice_indexs[i][2] == mom_plot_index) {
-                    return choices[i];
+                if (role == MOM) {
+                    if (choice_indexs[i][2] == mom_plot_index+1) {
+//                        setRole(CHOICE);
+                        return choices[i];
+                    }
                 }
             }
         }
         return null;
     }
 
+    // all pictures id
     public int[] pics = {
             R.drawable.pic1,
+            R.drawable.pic2,
+            R.drawable.pic2,
+            R.drawable.pic2,
+            R.drawable.pic2,
+            R.drawable.pic2,
+            R.drawable.pic2,
+            R.drawable.pic2,
+            R.drawable.pic2,
+            R.drawable.pic2,
+            R.drawable.pic2,
             R.drawable.pic2
     };
 
+    //picture location
     int[][] pic_indexs = {
             {0, PLAYER, 2, AUTO_PIC},
             {0, CHOICE, 2, AUTO_PIC},
@@ -256,25 +332,34 @@ public abstract class BaseActivity extends Activity {
 
     public int getPics() {
         for (int i = 0; i < pic_indexs.length; i++) {
-//            if (pic_indexs[i][0] == group_index && pic_indexs[i][1] == role && (pic_indexs[i][2] == player_plot_index | pic_indexs[i][2] == mom_plot_index)) {
-//                return pics[i];
-//            }
-            if (role == pic_indexs[i][1]) {
-                if (pic_indexs[i][0] == group_index && pic_indexs[i][2] == player_plot_index) {
+            if (pic_indexs[i][0] == group_index) {
+                if (pic_indexs[i][2] == player_plot_index) {
                     pic_mode = pic_indexs[i][3];
                     return pics[i];
-                }
-            } else if (role == pic_indexs[i][1]) {
-                if (pic_indexs[i][0] == group_index && pic_indexs[i][2] == mom_plot_index) {
+                } else if (pic_indexs[i][2] == mom_plot_index) {
                     pic_mode = pic_indexs[i][3];
                     return pics[i];
-                }
-            } else if (role == pic_indexs[i][1] && pic_indexs[i][2] == player_plot_index) {
-                if (pic_indexs[i][0] == group_index) {
+                } else {
                     pic_mode = pic_indexs[i][3];
                     return pics[i];
                 }
             }
+//            if (role == pic_indexs[i][1]) {
+//                if (pic_indexs[i][0] == group_index && pic_indexs[i][2] == player_plot_index) {
+//                    pic_mode = pic_indexs[i][3];
+//                    return pics[i];
+//                }
+//            } else if (role == pic_indexs[i][1]) {
+//                if (pic_indexs[i][0] == group_index && pic_indexs[i][end2] == mom_plot_index) {
+//                    pic_mode = pic_indexs[i][3];
+//                    return pics[i];
+//                }
+//            } else if (role == pic_indexs[i][1] && pic_indexs[i][end2] == player_plot_index) {
+//                if (pic_indexs[i][0] == group_index) {
+//                    pic_mode = pic_indexs[i][3];
+//                    return pics[i];
+//                }
+//            }
         }
         return -1;
     }
@@ -315,6 +400,8 @@ public abstract class BaseActivity extends Activity {
     }
 
     private ImageView photoIv;
+    private GifImageView endIv;
+    private GifDrawable endGIFDrawable;
     private ChatBottomView tbbv;
 
     public ChatBottomView getTbbv() {
@@ -386,6 +473,10 @@ public abstract class BaseActivity extends Activity {
         send = findViewById(R.id.send);
         photo = findViewById(R.id.photo);
         photoIv = findViewById(R.id.photoIv);
+        endIv = findViewById(R.id.endIv);
+        endGIFDrawable = (GifDrawable) endIv.getDrawable();
+        endGIFDrawable.start();
+        endGIFDrawable.setLoopCount(1);
         if (android.os.Build.VERSION.SDK_INT <= 10) {
             mEditTextContent.setInputType(InputType.TYPE_NULL);
         } else {
@@ -403,7 +494,7 @@ public abstract class BaseActivity extends Activity {
         tbbv = (ChatBottomView) findViewById(R.id.other_lv);
         choice1 = tbbv.getImageGroup();
         choice2 = tbbv.getCameraGroup();
-        setPlotView();
+        setPlotView(null);
         initActionBar();
     }
 
@@ -413,7 +504,7 @@ public abstract class BaseActivity extends Activity {
         pic_id = getPics();
         if (pic_id != -1) {
             if (pic_mode == AUTO_PIC) {
-                autoPicHandler.sendEmptyMessageDelayed(0, 2000);
+                autoPicHandler.sendEmptyMessageDelayed(0, 1000);
             } else {
                 photo.setBackgroundColor(getResources().getColor(R.color.red1));
                 photo.setClickable(true);
@@ -456,17 +547,20 @@ public abstract class BaseActivity extends Activity {
             public void onClick(int from) {
                 if (choice2.getVisibility() == View.GONE) {
                     if (from == ChatBottomView.FROM_GALLERY) {
-                        mEditTextContent.setText(getPlayerPlot());
+                        try {
+                            mEditTextContent.setText(getPlayerPlot());
+                        } catch (ArrayIndexOutOfBoundsException e) {
+
+                        }
                     }
                 } else if (choice2.getVisibility() == View.VISIBLE) { //two choices
-                    setRole(CHOICE);
+//                    setRole(CHOICE);
                     if (from == ChatBottomView.FROM_GALLERY) {
                         choice = 0;
                     } else if (from == ChatBottomView.FROM_CAMERA) {
                         choice = 1;
                     }
                     tbbv.setVisibility(View.GONE);
-                    showPic();
                     roadMap();
                 }
             }
@@ -480,17 +574,18 @@ public abstract class BaseActivity extends Activity {
 //                    mEditTextContent.setClickable(false);
 //                    tbbv.setClickable(false);
 //                    mess_et_click.callOnClick();
-                    mess_et_click.setClickable(false);
+//                    mess_et_click.setClickable(false);
                     photo.setClickable(false);
-                    String[] onechoice = getOnechoice();
+//                    String[] onechoice = getOnechoice();
+                    sendMessage();
 //                    int pics = getPics();
-                    if (onechoice != null) {
-                        setRole(CHOICE);
-                        sendMessageWithoutReceive();
-                    } else {
-                        setRole(PLAYER);
-                        sendMessage();
-                    }
+//                    if (onechoice != null) {
+//                        setRole(CHOICE);
+//                        sendMessage();
+//                    } else {
+//                        setRole(PLAYER);
+//                        sendMessage();
+//                    }
 //                    if(plot_index<player_choice_short.length-1) {
 //                        plot_index++;
 //                        setPlot();
@@ -514,7 +609,7 @@ public abstract class BaseActivity extends Activity {
             public void onClick(View view) {
                 photoIv.setVisibility(View.VISIBLE);
                 photoIv.setImageDrawable(getResources().getDrawable(pic_id));
-                takePhotoHandler.sendEmptyMessageDelayed(0, 4000);
+                takePhotoHandler.sendEmptyMessageDelayed(0, 1000);
             }
         });
         photo.setClickable(false);
