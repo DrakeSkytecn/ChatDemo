@@ -42,7 +42,7 @@ public class PullToRefreshLayout extends LinearLayout {
         myList.setLayoutParams(lp1);
         LayoutParams lp2 = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtil.dip2px(getContext(), 100));
         pullText = new TextView(getContext());
-        pullText.setText("下拉加载更多");
+        pullText.setText("loading");
 //        pullText.setBackgroundColor(Color.parseColor("#FFFFFF"));
         pullText.setGravity(Gravity.CENTER);
         pullText.setLayoutParams(lp2);

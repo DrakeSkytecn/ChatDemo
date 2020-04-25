@@ -107,7 +107,7 @@ public abstract class BaseActivity extends Activity {
             "什麼都沒有，我只是看到好像血跡的染料殘留在樓梯上。\n哦，我看到這裡有一些木頭在草地上，好像有人在這裡燒烤過"
     }}, {{
             "什麼？",
-            "什麼？",
+            "什麼？!!!",
             "發生了什麼事？",
             "快點。",
             "看起來怎麼樣？",
@@ -118,7 +118,7 @@ public abstract class BaseActivity extends Activity {
             "是幻覺還是只是……",
             "沒事。",
             "等等，媽媽，我看到一所房子",
-            "這是一間木屋，但是很笨重。",
+            "這是一間木屋，但是很殘舊。",
             "但是也許有什麼..."
     }}, {{
             "不要想太多，也許只是動物。",
@@ -170,9 +170,8 @@ public abstract class BaseActivity extends Activity {
             if (choice == 0) {
                 Toast.makeText(this, "不是這樣，我記得她說要去自助服務亭", Toast.LENGTH_SHORT).show();
             } else {
-                pic_id = R.drawable.pic2;
-                autoPicHandler.sendEmptyMessageDelayed(0, 500);
-//                showPic();
+//                pic_id = R.drawable.pic2;
+//                autoPicHandler.sendEmptyMessageDelayed(0, 500);
                 setRole(PLAYER);
                 setAllIndexs(1);
                 setPlotView(null);
@@ -182,12 +181,11 @@ public abstract class BaseActivity extends Activity {
             if (choice == 0) {
                 pic_id = R.drawable.pic4;
                 autoPicHandler.sendEmptyMessageDelayed(0, 500);
-//                showPic();
                 setRole(PLAYER);
                 setAllIndexs(2);
                 setPlotView(null);
             } else {
-                showPic();
+//                showPic();
                 setRole(PLAYER);
                 setAllIndexs(3);
                 setPlotView(null);
@@ -197,7 +195,6 @@ public abstract class BaseActivity extends Activity {
             if (choice == 0) {
                 pic_id = R.drawable.pic5;
                 autoPicHandler.sendEmptyMessageDelayed(0, 500);
-//                showPic();
                 setRole(PLAYER);
                 setAllIndexs(4);
                 setPlotView(null);
@@ -220,7 +217,6 @@ public abstract class BaseActivity extends Activity {
             } else {
                 endIv.setImageResource(R.drawable.end3);
                 endIv.setVisibility(View.VISIBLE);
-//                playerEndGIF(R.drawable.end3);
             }
         }
     }
@@ -255,17 +251,6 @@ public abstract class BaseActivity extends Activity {
             choice2.setText(c[2]);
             choice2.setVisibility(View.VISIBLE);
         }
-
-//        if (role == PLAYER) {
-//            choice2.setVisibility(View.GONE);
-//            choice1.setText(getPlayerPlot());
-//        } else if (role == CHOICE) {
-//            mess_et_click.setClickable(true);
-//            String[] c = getOnechoice();
-//            choice1.setText(c[1]);
-//            choice2.setText(c[2]);
-//            choice2.setVisibility(View.VISIBLE);
-//        }
     }
 
     // choice location
@@ -292,13 +277,11 @@ public abstract class BaseActivity extends Activity {
             if (choice_indexs[i][0] == group_index) {
                 if (PLAYER == choice_indexs[i][1]) {
                     if (choice_indexs[i][2] == player_plot_index+1) {
-//                        setRole(CHOICE);
                         return choices[i];
                     }
                 }
                 if (MOM == choice_indexs[i][1]) {
                     if (choice_indexs[i][2] == mom_plot_index+1) {
-//                        setRole(CHOICE);
                         return choices[i];
                     }
                 }
@@ -311,16 +294,18 @@ public abstract class BaseActivity extends Activity {
     public int[] pics = {
             R.drawable.pic1,
             R.drawable.pic2,
+            R.drawable.pic2,
             R.drawable.pic3,
-            R.drawable.pic3
+            R.drawable.pic6
     };
 
     //picture location
     int[][] pic_indexs = {
             {0, PLAYER, 3, AUTO_PIC},
             {0, CHOICE, 2, AUTO_PIC},
-            {1, PLAYER, 0, AUTO_PIC},
-            {1, MOM, 1, AUTO_PIC}
+            {1, PLAYER, 1, AUTO_PIC},
+            {1, MOM, 1, AUTO_PIC},
+            {1, PLAYER, 4, AUTO_PIC}
     };
 
     public int getPics() {
@@ -337,27 +322,9 @@ public abstract class BaseActivity extends Activity {
                         return pics[i];
                     }
                 }
-//                else {
-//                    pic_mode = pic_indexs[i][3];
-//                    return pics[i];
-//                }
+
             }
-//            if (role == pic_indexs[i][1]) {
-//                if (pic_indexs[i][0] == group_index && pic_indexs[i][2] == player_plot_index) {
-//                    pic_mode = pic_indexs[i][3];
-//                    return pics[i];
-//                }
-//            } else if (role == pic_indexs[i][1]) {
-//                if (pic_indexs[i][0] == group_index && pic_indexs[i][end2] == mom_plot_index) {
-//                    pic_mode = pic_indexs[i][3];
-//                    return pics[i];
-//                }
-//            } else if (role == pic_indexs[i][1] && pic_indexs[i][end2] == player_plot_index) {
-//                if (pic_indexs[i][0] == group_index) {
-//                    pic_mode = pic_indexs[i][3];
-//                    return pics[i];
-//                }
-//            }
+
         }
         return -1;
     }
@@ -571,25 +538,9 @@ public abstract class BaseActivity extends Activity {
             public void onClick(View view) {
                 if (!mEditTextContent.getText().toString().isEmpty()) {
                     tbbv.setVisibility(View.GONE);
-//                    mEditTextContent.setClickable(false);
-//                    tbbv.setClickable(false);
-//                    mess_et_click.callOnClick();
                     mess_et_click.setClickable(false);
                     photo.setClickable(false);
-//                    String[] onechoice = getOnechoice();
                     sendMessage();
-//                    int pics = getPics();
-//                    if (onechoice != null) {
-//                        setRole(CHOICE);
-//                        sendMessage();
-//                    } else {
-//                        setRole(PLAYER);
-//                        sendMessage();
-//                    }
-//                    if(plot_index<player_choice_short.length-1) {
-//                        plot_index++;
-//                        setPlot();
-//                    }
                 }
             }
         });
@@ -664,64 +615,6 @@ public abstract class BaseActivity extends Activity {
         ((TextView) getActionBar().getCustomView().findViewById(R.id.tvTitle)).setText(getTitle().toString());
     }
 
-//    @TargetApi(23)
-//    protected void getPersimmions() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            ArrayList<String> permissions = new ArrayList<String>();
-//
-//            if (addPermission(permissions, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-//            }
-//
-//            if (addPermission(permissions, Manifest.permission.RECORD_AUDIO)) {
-//            }
-//            if (permissions.size() > 0) {
-//                requestPermissions(permissions.toArray(new String[permissions.size()]), SDK_PERMISSION_REQUEST);
-//            }
-//        }
-//    }
-
-//    @TargetApi(23)
-//    private boolean addPermission(ArrayList<String> permissionsList, String permission) {
-//        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
-//            if (shouldShowRequestPermissionRationale(permission)) {
-//                return true;
-//            } else {
-//                permissionsList.add(permission);
-//                return false;
-//            }
-//
-//        } else {
-//            return true;
-//        }
-//    }
-
-//    @TargetApi(23)
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case SDK_PERMISSION_REQUEST:
-//                Map<String, Integer> perms = new HashMap<String, Integer>();
-//
-//                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-//                perms.put(Manifest.permission.RECORD_AUDIO, PackageManager.PERMISSION_GRANTED);
-//
-//                for (int i = 0; i < permissions.length; i++)
-//                    perms.put(permissions[i], grantResults[i]);
-//
-//                if (perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//
-//                    CAN_WRITE_EXTERNAL_STORAGE = false;
-//                }
-//                if (perms.get(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-//                    CAN_RECORD_AUDIO = false;
-//                }
-//                break;
-//            default:
-//                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        }
-//    }
-
     public void setTitle(CharSequence title) {
         ((TextView) getActionBar().getCustomView().findViewById(R.id.tvTitle)).setText(title);
     }
@@ -756,33 +649,6 @@ public abstract class BaseActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             tbbv.setVisibility(View.GONE);
-//            switch (requestCode) {
-//                case ChatBottomView.FROM_CAMERA:
-//                    FileInputStream is = null;
-//                    try {
-//                        is = new FileInputStream(camPicPath);
-//                        File camFile = new File(camPicPath);
-//                        if (camFile.exists()) {
-//                            int size = ImageCheckoutUtil
-//                                    .getImageSize(ImageCheckoutUtil
-//                                            .getLoacalBitmap(camPicPath));
-//                            if (size > IMAGE_SIZE) {
-//                            } else {
-//
-//                            }
-//                        }
-//                    } catch (FileNotFoundException e) {
-//                                                e.printStackTrace();
-//                    } finally {
-//
-//                        try {
-//                            is.close();
-//                        } catch (IOException e) {
-//                                                        e.printStackTrace();
-//                        }
-//                    }
-//                    break;
-//            }
         }
     }
 
